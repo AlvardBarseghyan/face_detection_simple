@@ -10,7 +10,7 @@ import json
 import os
 from typing import Dict
 
-from data.dataloader import load_datasets_from_dirs, get_class_names_from_dir
+from data.dataloader import load_datasets, get_class_names_from_dir
 from models.fc_model import build_fc_model
 from models.cnn_model import build_cnn_model
 from models.transfer_model import build_vgg_model
@@ -54,7 +54,8 @@ def run_one(kind: str, run_dir: str, train_dir: str, valid_dir: str, test_dir: s
         }, f, indent=2)
 
     # Data
-    train_ds, valid_ds, test_ds, class_names = load_datasets_from_dirs(
+    class_names = get_class_names_from_dir(train_dir)
+    train_ds, valid_ds, test_ds = load_datasets(
         train_dir, valid_dir, test_dir, batch_size=batch_size, augment=augment
     )
 
