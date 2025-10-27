@@ -46,20 +46,11 @@ def prepare_dataset(path: str, batch_size: int = BATCH_SIZE, image_size: tuple =
 	return ds
 
 
-def load_datasets() -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset]:
-	set_seed(SEED)
-	train_ds = prepare_dataset(TRAIN_DIR, BATCH_SIZE, IMAGE_SIZE, augment=False)
-	valid_ds = prepare_dataset(VALID_DIR, BATCH_SIZE, IMAGE_SIZE, augment=False)
-	test_ds = prepare_dataset(TEST_DIR, BATCH_SIZE, IMAGE_SIZE, augment=False)
-	return train_ds, valid_ds, test_ds
-
-
 def get_class_names_from_dir(path: str) -> List[str]:
 	entries = [d for d in os.listdir(path) if os.path.isdir(os.path.join(path, d))]
 	return sorted(entries)
 
-
-def load_datasets_from_dirs(train_dir: str, valid_dir: str, test_dir: str,
+def load_datasets(train_dir: str, valid_dir: str, test_dir: str,
 		batch_size: int = BATCH_SIZE, image_size: tuple = IMAGE_SIZE, augment: bool = False
 	) -> Tuple[tf.data.Dataset, tf.data.Dataset, tf.data.Dataset, List[str]]:
 	"""Load datasets from explicit directories and return class names.
@@ -76,9 +67,9 @@ def load_datasets_from_dirs(train_dir: str, valid_dir: str, test_dir: str,
 		(train_ds, valid_ds, test_ds, class_names)
 	"""
 	set_seed(SEED)
-	class_names = get_class_names_from_dir(train_dir)
 	train_ds = prepare_dataset(train_dir, batch_size, image_size, augment=augment, shuffle=True)
 	valid_ds = prepare_dataset(valid_dir, batch_size, image_size, augment=False, shuffle=False)
 	test_ds = prepare_dataset(test_dir, batch_size, image_size, augment=False, shuffle=False)
-	return train_ds, valid_ds, test_ds, class_names
+	return train_ds, valid_ds, test_ds
+
 
